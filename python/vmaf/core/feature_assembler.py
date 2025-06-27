@@ -3,6 +3,8 @@ __license__ = "BSD+Patent"
 
 from vmaf.core.feature_extractor import FeatureExtractor
 from vmaf.core.result import BasicResult
+from vmaf.core.cambi_feature_extractor import CambiFeatureExtractor
+from .ciede_feature_extractor import CiedeFeatureExtractor
 
 
 class FeatureAssembler(object):

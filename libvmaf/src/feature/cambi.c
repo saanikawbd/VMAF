@@ -1147,7 +1147,7 @@ static int preprocess_and_extract_cambi(CambiState *s, VmafPicture *pic, double 
     if (err) return err;
 
     return 0;
-}
+}  
 
 static double combine_dist_src_scores(double dist_score, double src_score) {
     return MAX(0, dist_score - src_score);
@@ -1211,9 +1211,10 @@ static int close_cambi(VmafFeatureExtractor *fex) {
 }
 
 static const char *provided_features[] = {
-    "cambi",
+    "VMAF_feature_cambi_scores",
     NULL
 };
+
 
 VmafFeatureExtractor vmaf_fex_cambi = {
     .name = "cambi",

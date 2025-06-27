@@ -304,7 +304,7 @@ static LABColor get_lab_color(double y, double u, double v, unsigned bpc)
         .b = 200.0 * (y - z),
     };
 
-    return lab_color;
+    return lab_color; 
 }
 
 static int extract(VmafFeatureExtractor *fex,
@@ -365,7 +365,7 @@ static int extract(VmafFeatureExtractor *fex,
             de00_sum += de00;
         }
     }
-
+ 
     const double score = 45. - 20. *
                          log10(de00_sum / (ref_pic->w[0] * ref_pic->h[0]));
     return vmaf_feature_collector_append(feature_collector, "ciede2000", score,
@@ -383,9 +383,10 @@ static int close(VmafFeatureExtractor *fex)
 }
 
 static const char *provided_features[] = {
-    "ciede2000",
+    "VMAF_feature_ciede2000_scores",
     NULL
 };
+
 
 VmafFeatureExtractor vmaf_fex_ciede = {
     .name = "ciede",

@@ -16,6 +16,7 @@ from vmaf.core.result import Result, BasicResult
 from vmaf.tools.reader import YuvReader
 
 
+
 class FeatureExtractor(Executor):
     """
     FeatureExtractor takes in a list of assets, and run feature extraction on
