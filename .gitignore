@@ -15,5 +15,6 @@ dist/
 vmaf_output.xml
 compile_commands.json
 resource/netflix
-resource/testing videos
+resource/testing_videos
 resource/videos
+output_scores
