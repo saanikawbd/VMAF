@@ -13,7 +13,7 @@ class CambiFeatureExtractor(VmafexecFeatureExtractorMixin, FeatureExtractor):
     ATOM_FEATURES_TO_VMAFEXEC_KEY_DICT = {
         'cambi': 'cambi'
     }
-
+    
     def _generate_result(self, asset):
         # routine to call the command-line executable and generate quality
         # scores in the log file.

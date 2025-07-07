@@ -1,5 +1,7 @@
 from vmaf import ExternalProgramCaller
 from vmaf.core.feature_extractor import VmafexecFeatureExtractorMixin, FeatureExtractor
+import json
+import math
 
 
 class FloatMotionFeatureExtractor(VmafexecFeatureExtractorMixin, FeatureExtractor):
@@ -397,3 +399,32 @@ class CIEDE2000FeatureExtractor(VmafexecFeatureExtractorMixin, FeatureExtractor)
         ExternalProgramCaller.call_vmafexec_single_feature(
             'ciede', yuv_type, ref_path, dis_path, w, h, log_file_path, logger,
             options={**optional_dict, **optional_dict2})
+        
+        with open(log_file_path, 'r') as f:
+            result_content = f.read()
+
+        # literal_eval only supports proper literals — replace inf/nan strings
+        result_content = result_content.replace('inf', '9999').replace('nan', 'null')
+
+        # Now write back safely
+        with open(log_file_path, 'w') as f:
+            f.write(result_content)
+    
+        # with open(log_file_path, 'r') as f:
+        #     log_dict = json.load(f)
+
+        # # Sanitize result
+        # result_dict = {}
+        # for feature in self.ATOM_FEATURES:
+        #     score_key = self.get_scores_key(feature)
+        #     score = log_dict.get(score_key)
+
+        #     if score is None or math.isnan(score) or math.isinf(score):
+        #         score = 1000.0
+
+        #     result_dict[score_key] = score
+
+        # # Write result in expected literal Python dict format
+        # self.write_result(asset, result_dict)
+
+        

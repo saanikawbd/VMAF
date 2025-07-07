@@ -2,6 +2,7 @@ from vmaf.core.feature_extractor import VmafexecFeatureExtractorMixin, FeatureEx
 from vmaf import ExternalProgramCaller
 from vmaf.core.result import Result
 import pandas as pd
+import xml.etree.ElementTree as ET
 import json
 
 
@@ -13,7 +14,7 @@ class CiedeFeatureExtractor(VmafexecFeatureExtractorMixin, FeatureExtractor):
     ATOM_FEATURES = ['ciede']
 
     ATOM_FEATURES_TO_VMAFEXEC_KEY_DICT = {
-        'ciede': 'ciede'
+        'ciede': 'ciede2000'  # match the XML attribute name exactly
     }
 
     def _generate_result(self, asset):
@@ -41,20 +42,13 @@ class CiedeFeatureExtractor(VmafexecFeatureExtractorMixin, FeatureExtractor):
         with open(log_file_path, 'r') as f:
             log_dict = json.load(f)
 
-        result_list = []
-        for frame_result in log_dict['frames']:
-            result_list.append({
-                'dataset': asset.dataset,
-                'content_id': asset.content_id,
-                'asset_id': asset.asset_id,
-                'ref_path': asset.ref_path,
-                'dis_path': asset.dis_path,
-                'feature_name': 'ciede',
-                'frame_num': frame_result['frameNum'],
-                'score': frame_result['metrics']['ciede']
-            })
+        # Build a result_dict mapping score keys to score lists
+        scores_key = self.get_scores_key('ciede')  # from FeatureExtractor
+        scores = [frame_result['metrics']['ciede'] for frame_result in log_dict['frames']]
 
-        df = pd.DataFrame(result_list)
-        result = Result(asset, self.executor_id)
-        result.result_df = df
+        result_dict = {scores_key: scores}
+
+        # Create Result object with result_dict
+        result = Result(asset, self.executor_id, result_dict=result_dict)
         return result
+
